@@ -99,4 +99,10 @@ function onListening() {
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+
+  // If we were started by a parent process as is the case in testing
+  // then send a message back to the parent to signify we're listening.
+  if (process.connected) {
+    process.send('listening');
+  }
 }

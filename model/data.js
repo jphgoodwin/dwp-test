@@ -16,18 +16,28 @@ const longMiles = 43;     // ~1 degree of longitude from London in miles.
 var usersArray = [];      // Array to hold users that either live in London, or are
                           // currently within 50 miles of it.
 
+var usersUpdateInterval;  // Updates usersArray at 60 second intervals.
+
+// Module initialisation function.
 async function init() {
   // Initially populate users array.
   await populateUsersArray();
 
   // Update the users array at 60 second intervals.
-  setInterval(updateUsersArray, 60000);
+  usersUpdateInterval = setInterval(updateUsersArray, 60000);
 }
 
-async function getPeopleNearLondon() {
+// Allows intervals to be stopped externally (e.g. in testing).
+function clearIntervals() {
+  clearInterval(usersUpdateInterval);
+}
+
+// Getter function for usersArray.
+function getPeopleNearLondon() {
   return usersArray;
 }
 
+// Function used to update users array, called by usersUpdateInterval.
 async function updateUsersArray() {
   try {
     await populateUsersArray();
@@ -38,6 +48,7 @@ async function updateUsersArray() {
   }
 }
 
+// Function sends requests to external API and populates usersArray with response.
 async function populateUsersArray() {
   // Get users that live in London and store in users array.
   let res = await sa.get('https://bpdts-test-app.herokuapp.com/city/London/users');
@@ -57,6 +68,8 @@ async function populateUsersArray() {
   usersArray = tempArray.concat(filterUsersNearLondon(allUsers));
 }
 
+// Function returns filtered array of users whose latitude and longitude place
+// them within 50 miles of London.
 function filterUsersNearLondon(users) {
   let result = [];
 
@@ -83,6 +96,7 @@ function filterUsersNearLondon(users) {
 
 module.exports = {
   init: init,
+  clearIntervals: clearIntervals,
   getPeopleNearLondon: getPeopleNearLondon,
   filterUsersNearLondon: filterUsersNearLondon
 };
