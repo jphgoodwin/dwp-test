@@ -5,6 +5,7 @@ This app accesses an external API at https://bpdts-test-app.herokuapp.com/ and c
 In order to improve response time, the retrieval of data from the external API and the serving of data to clients is separated. The internal data is updated from the external API at 60 second intervals. This results in a >100 times improvement in response time to incoming client requests. A full profile is shown below.
 
 ## Installation instructions
+- You will need Node.js and npm installed in order to run this program.
 - After cloning the repo, you will need to navigate to the folder containing the package.json file and use the command ```npm install``` to install the required packages and dependencies.
 
 ## Launching server
