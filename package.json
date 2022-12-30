@@ -19,6 +19,6 @@
     "superagent": "^5.2.2"
   },
   "devDependencies": {
-    "mocha": "^7.1.0"
+    "mocha": "^10.2.0"
   }
 }
